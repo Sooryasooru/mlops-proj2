@@ -1,0 +1,38 @@
+name :ML CI CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-train:
+    runs-on:ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+
+      - name: setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+
+      - name: Install dependencies
+        run: pip install r- requirements.txt
+
+      - name: Run tests (CI)
+        run : pytest
+
+      - name: Train model (CD)
+        run: python src/train.py
+
+      - name: upload trained model
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: model.pkl
+
+          
